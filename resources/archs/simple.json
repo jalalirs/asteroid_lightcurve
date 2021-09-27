@@ -1,0 +1,11 @@
+{
+	"structure": "conv",
+	"template":"relu_softmax",
+	"epochs": 100,
+	"netargs": {
+		"nns": [16,32,64,128,256,1024],
+		"dropout": [0.0,0.0,0.0,0.0,0.0,0.0],
+		"in_s": [465,310,3],
+		"out_s": 8
+	}
+}
