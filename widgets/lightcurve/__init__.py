@@ -1,4 +1,4 @@
-from . import lightcurvewidget
-from . import earthlightcurve
-LightCurveWidget = lightcurvewidget.LightCurveWidget
-EarthLightCurveWidget = earthlightcurve.EarthLightCurveWidget
+from . import customesetupwidget
+from . import solarsystemwidget
+CustomeSetupWidget = customesetupwidget.CustomeSetupWidget
+SolarSystemWidget = solarsystemwidget.SolarSystemWidget

@@ -14,12 +14,12 @@ def clear_layout(layout):
 		 	item.deleteLater()
 
 def _error(msg):
-	msg = QMessageBox()
-	msg.setIcon(QMessageBox.Critical)
-	msg.setText(msg)  	
-	msg.setWindowTitle("Alert")
-	msg.setStandardButtons(QMessageBox.Close)
-	retval = msg.exec_()
+	msgBox = QMessageBox()
+	msgBox.setIcon(QMessageBox.Critical)
+	msgBox.setText(msg)  	
+	msgBox.setWindowTitle("Alert")
+	msgBox.setStandardButtons(QMessageBox.Close)
+	retval = msgBox.exec_()
 
 def notify(msg,ntype="error"):
 	if ntype == "error":

@@ -139,54 +139,6 @@ QWidget#messageBox QLabel[messagetype="error"] { background: rgb(190,17,0); colo
 QWidget#messageBox QLabel[messagetype="warn"] { background: rgb(184,149,0); color: white; font-weight: bold;}     
 QWidget#messageBox QLabel[messagetype="info"] { background: rgb(0,122,204); color: white; font-weight: bold;}     
 
-QTabWidget::pane { /* The tab widget frame */
-    /*border-top: 1px solid rgb(201,210,226);*/
-    background: rgb(30,30,30); 
-    position: absolute;
-    border: 0px;
-    /*top: -1px;*/
-}
-QTabWidget::tab-bar {
-    /*left: 15px; */
-}
-QTabBar {
-  qproperty-drawBase: 0;
-}
-QTabBar::tab {
-  color: gray;
-  background: black ; 
-  border: 0px;
-  min-width: 8em;
-  padding: 4px;
-  height: 40px;
-} 
-
-QTabBar::tab:hover {
-  color: white;
-}
-QTabBar::tab:!selected {
-    /*border-bottom: 1px solid rgb(201,210,226);*/
-}
-
-QTabBar::tab:selected {
-    outline: 0px;
-    color: white;
-    background-color: rgb(44,44,44);
-    /*border-top: 1px solid gray;*/
-}
-QTabBar::tab:checked {
-    border: 0px;
-    outline: 0px;  
-}
-QTabBar::close-button { image: url(:/images/img-1.png.png); }
-QTabBar::close-button:hover { image: url(:/images/delete_48.png);}
-
-
-/*QTabBar::tear {  image: url(tear_indicator.png);}*/
-QTabBar::scroller { border:0px; width: 40px; }
-QTabBar QToolButton { background:rgb(44,44,44); border-width: 2px;}
-/*QTabBar QToolButton::right-arrow { image: url(rightarrow.png);}*/
-/*QTabBar QToolButton::left-arrow { image: url(leftarrow.png);}*/
 
 QScrollBar:vertical { border: 0px; background:rgb(44,44,44); width:24px; margin: 0px 0px 0px 0px;}
 QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {  background: none;}

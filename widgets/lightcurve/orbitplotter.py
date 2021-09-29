@@ -34,15 +34,20 @@ class OrbitPlot(FigureCanvas):
 		self._ax = self.fig.add_subplot(111)
 		self.plotter = StaticOrbitPlotter(self._ax)
 		self.objects = []
+		self.currentCanvasSize = None
 
 
 	def plot(self,earth,body,epoch, labels,clear=False):
 		if clear:
 			self._ax.clear()
+		self.currentCanvasSize = self.fig.get_size_inches()
 		#for obj,lbl in zip(objs,labels):
 		earth_t,earth_p = self.plotter.plot_body_orbit(earth,epoch,label=labels[0])
 		body_t,body_p = self.plotter.plot_body_orbit(body,epoch,label=labels[1])
+		
 		self.fig.tight_layout()
+		#self.fig.set_size_inches()
+		self.fig.set_size_inches(self.currentCanvasSize)
 		self.draw()
 		self.flush_events()
 		return earth_t,earth_p,body_t,body_p

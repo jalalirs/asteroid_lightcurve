@@ -24,7 +24,7 @@ if hasattr(QtCore.Qt, 'AA_UseHighDpiPixmaps'):
     PyQt5.QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_UseHighDpiPixmaps, True)
 
 DIR = os.path.abspath(os.path.dirname(__file__))
-QLightCurveWidget, Ui_LightCurveWidget = uic.loadUiType(os.path.join(DIR, "lightcurvewidget.ui"), resource_suffix='') 
+QCustomeSetupWidget, Ui_CustomeSetupWidget = uic.loadUiType(os.path.join(DIR, "customesetupwidget2.ui"), resource_suffix='') 
 from astropy.time import Time
 import time
 import trimesh
@@ -48,7 +48,7 @@ class CustomThread(QtCore.QThread):
 		else:
 			self.target()
 
-class LightCurveWidget(QLightCurveWidget,Ui_LightCurveWidget):
+class CustomeSetupWidget(QCustomeSetupWidget,Ui_CustomeSetupWidget):
 	def __init__(self,parent):
 		QWidget.__init__(self,parent)
 		self.setupUi(self)
@@ -104,12 +104,15 @@ class LightCurveWidget(QLightCurveWidget,Ui_LightCurveWidget):
 		self.mesh = trimesh.load(path)
 		self.lbl_meshName.setText(meshname)
 		
-
+	def on_pb_stop_released(self):
+		self.play= False
 	def on_pb_play_released(self):
 		if self.mesh is None:
 			qtutil.notify("You need to load a mesh first")
 			return
-		
+		self.pb_play.setEnabled(False)
+		self.pb_stop.setEnabled(True)
+		self.play = True
 		sin,cos,rad = np.sin,np.cos,np.deg2rad
 		tran = lambda tx,ty,tz: np.array([[1,0,0,tx],[0,1,0,ty],[0,0,1,tz],[0,0,0,1]])
 		rot = lambda a,b,g: np.array([[cos(b)*cos(g),cos(b)*sin(g),-sin(b),0],
@@ -126,7 +129,13 @@ class LightCurveWidget(QLightCurveWidget,Ui_LightCurveWidget):
 
 		# light
 		lightStrength = float(self.ln_lightStrength.text())
-		light = pyrender.light.PointLight((1,1,1),lightStrength)
+		lightType = self.cmb_lightType.currentText()
+		if lightType == "Point":
+			light = pyrender.light.PointLight((1,1,1),lightStrength)
+		elif lightType == "Directional":
+			light = pyrender.light.DirectionalLight((1,1,1),lightStrength)
+		elif lightType == "Spot":
+			light = pyrender.light.SpotLight((1,1,1),lightStrength)
 		lightPosX,lightPosY,lightPosZ = float(self.ln_lightX.text()),float(self.ln_lightY.text()),float(self.ln_lightZ.text())
 		lightNode = pyrender.Node(light=light,matrix=tran(lightPosX,lightPosY,lightPosZ))
 		self.scene.add_node(lightNode)
@@ -168,10 +177,10 @@ class LightCurveWidget(QLightCurveWidget,Ui_LightCurveWidget):
 		time = 0
 		shotTime = 0
 		y = []
-		currentIntensity = np.zeros((400,400,3))
+		currentIntensity = 0
 		line = np.array([0]*int(period/shotterSpeed))
 		lineCount = 0
-		while time < period:
+		while time < period and self.play:
 			time += dt
 			shotTime += dt
 			meshRotX,meshRotY,meshRotZ = meshRotX+dt*wX,meshRotY+dt*wY,meshRotZ+dt*wZ
@@ -180,12 +189,17 @@ class LightCurveWidget(QLightCurveWidget,Ui_LightCurveWidget):
 			self.scene.set_pose(meshNode, pose=meshPose)
 			
 			color, depth = self.r.render(self.scene)
-			RColor = 255-color
-			currentIntensity += RColor
-			self.renderedImagePlot.plot(RColor,clear=True)
+			color = color.copy()
+			color[depth == 0] = 0
+			currentIntensity += color.sum()
+			self.renderedImagePlot.plot(color,clear=True)
 			if shotTime >= shotterSpeed:
 				shotTime = 0
-				line[lineCount] = currentIntensity.sum()/currentIntensity.size
+				line[lineCount] = currentIntensity#currentIntensity.sum()
 				self.lineplot.plot(line[:lineCount+1],clear = lineCount == 0)
 				lineCount += 1
-				currentIntensity = np.zeros((400,400,3))
+				currentIntensity =0
+
+		self.play = False
+		self.pb_stop.setEnabled(False)
+		self.pb_play.setEnabled(True)

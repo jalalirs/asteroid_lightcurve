@@ -18,8 +18,8 @@ from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 
 
-from widgets.lightcurve import LightCurveWidget
-from widgets.lightcurve import EarthLightCurveWidget
+from widgets.lightcurve import CustomeSetupWidget
+from widgets.lightcurve import SolarSystemWidget
 import utils
 
 
@@ -36,10 +36,10 @@ class AstroidCurve(QMainWindow, Ui_MainWindow):
 		if stream.open(QIODevice.ReadOnly | QFile.Text):
 			self.setStyleSheet(QTextStream(stream).readAll())
 		
-		earthWidget = EarthLightCurveWidget(self)
-		self._earthWidget = earthWidget
+		solarSystemWidget = SolarSystemWidget(self)
+		self._solarSystemWidget = solarSystemWidget
 		earthLayout = QVBoxLayout()
-		earthLayout.addWidget(earthWidget)
+		earthLayout.addWidget(solarSystemWidget)
 		self.pageEarth.setLayout(earthLayout)
 
 		# trainingWidget = TrainingWidget(self)
@@ -48,15 +48,15 @@ class AstroidCurve(QMainWindow, Ui_MainWindow):
 		# trainingLayout.addWidget(trainingWidget)
 		# self.pageTrain.setLayout(trainingLayout)
 
-		lightWidget = LightCurveWidget(self)
-		self._lightWidget = lightWidget
+		customeSetupWidget = CustomeSetupWidget(self)
+		self._customeSetupWidget = customeSetupWidget
 		lightlayout = QVBoxLayout()
-		lightlayout.addWidget(lightWidget)
+		lightlayout.addWidget(customeSetupWidget)
 		self.pageLight.setLayout(lightlayout)
 
 		#self.on_pbData_released()
-		self.mainStackedWidget.setCurrentIndex(1)
-		self.uncheck_and_keep(1)
+		self.mainStackedWidget.setCurrentIndex(0)
+		self.uncheck_and_keep(0)
 
 	def uncheck_and_keep(self,keepindex):
 		toolbarButtons = self.toolbarWidget.findChildren(QtWidgets.QPushButton)
