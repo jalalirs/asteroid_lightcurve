@@ -21,9 +21,19 @@ def _error(msg):
 	msgBox.setStandardButtons(QMessageBox.Close)
 	retval = msgBox.exec_()
 
+def _info(msg):
+	msgBox = QMessageBox()
+	msgBox.setIcon(QMessageBox.Information)
+	msgBox.setText(msg)  	
+	msgBox.setWindowTitle("Info")
+	msgBox.setStandardButtons(QMessageBox.Close)
+	retval = msgBox.exec_()
+
 def notify(msg,ntype="error"):
 	if ntype == "error":
 		_error(msg)
+	elif ntype == "info":
+		_info(msg)
 def getDirBrowser():
 	dialog = QtWidgets.QFileDialog()
 	dialog.setFileMode(QtWidgets.QFileDialog.Directory)

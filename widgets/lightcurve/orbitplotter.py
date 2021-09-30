@@ -8,7 +8,6 @@ from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
 from poliastro.plotting import StaticOrbitPlotter
-import sys
 import numpy as np
 
 def resadjust(ax, ticks, ticks_labels):

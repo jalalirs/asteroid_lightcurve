@@ -7,25 +7,10 @@ from .. import qt_util as qtutil
 from .lineplot import LinePlot
 from .imgplot import ImagePlot
 from .orbitplotter import OrbitPlot
-from .threedplot import ThreeDPlot
+from ..mesh import Mesh
 
-from PIL.ImageQt import ImageQt
 import numpy as np
 import os
-from PyQt5 import QtCore, QtGui, QtWidgets, uic
-from PyQt5 import QtCore, QtWidgets,QtGui
-from PyQt5.QtWidgets import QWidget,QTableWidgetItem,QAction,QStyledItemDelegate
-from PyQt5.QtCore import Qt,QSize
-from PyQt5.QtGui import QColor, QPen, QBrush,QPainter,QColor, QPalette,QPen
-import PyQt5
-if hasattr(QtCore.Qt, 'AA_EnableHighDpiScaling'):
-    PyQt5.QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling, True)
-
-if hasattr(QtCore.Qt, 'AA_UseHighDpiPixmaps'):
-    PyQt5.QtWidgets.QApplication.setAttribute(QtCore.Qt.AA_UseHighDpiPixmaps, True)
-
-DIR = os.path.abspath(os.path.dirname(__file__))
-QSolarSystemWidget, Ui_SolarSystemWidget = uic.loadUiType(os.path.join(DIR, "solarsystemwidget2.ui"), resource_suffix='') 
 from astropy.time import Time
 import time
 import trimesh
@@ -38,21 +23,17 @@ from astropy.time import Time
 from poliastro.ephem import  Ephem
 import math
 
+from PyQt5 import QtCore, QtGui, QtWidgets, uic
+from PyQt5.QtWidgets import QWidget
+from PyQt5.QtGui import QIcon, QPixmap
 
-class CustomThread(QtCore.QThread):
-	def __init__(self, target, slotOnFinished=None):
-		super(CustomThread, self).__init__()
-		self.target = target
-		self._args = None
-		if slotOnFinished:
-			self.finished.connect(slotOnFinished)
-	def set_args(self,args):
-		self._args = args
-	def run(self):
-		if self._args:
-			self.target(*self._args)
-		else:
-			self.target()
+
+DIR = os.path.abspath(os.path.dirname(__file__))
+QSolarSystemWidget, Ui_SolarSystemWidget = uic.loadUiType(os.path.join(DIR, "solarsystemwidget2.ui"), resource_suffix='') 
+
+
+
+
 
 def length(v):
     return math.sqrt(v[0]*v[0]+v[1]*v[1]+v[2]*v[2])
@@ -76,19 +57,14 @@ class SolarSystemWidget(QSolarSystemWidget,Ui_SolarSystemWidget):
 	def __init__(self,parent):
 		QWidget.__init__(self,parent)
 		self.setupUi(self)
-		self.progressBar.setVisible(False)
-		self.progressLabel.setVisible(False)
 		
 		self._presets = {"Mars": Mars}
 		
 		self.object = None
 
-		#self.__request_classifiers()
 		self.__init_plots()
 		self.scene = None
 		self.scene =  pyrender.Scene()
-		
-		
 		
 		self.cameraNode = None
 		self.meshNode = None
@@ -97,9 +73,8 @@ class SolarSystemWidget(QSolarSystemWidget,Ui_SolarSystemWidget):
 		self.r = pyrender.OffscreenRenderer(400, 400)
 		self.mesh = None
 		self.play = False
+		Mesh.mesh.signal.connect(self.onMeshChanged)
 
-		#self.loadGPModelThread = CustomThread(self.load_GPModel, self.on_finished_loadingGPModel)
-		#self.updateClassThread = CustomThread(self.update_class, self.on_finished_updateClass)
 	def clear_scene(self):
 		for n in self.sceneNodes:
 			try:
@@ -135,11 +110,12 @@ class SolarSystemWidget(QSolarSystemWidget,Ui_SolarSystemWidget):
 		if not path:
 			return
 		meshname = path.split("/")[-1].split(".")[0]
-		self.mesh = trimesh.load(path)
+		Mesh.load_mesh(path)
 		self.lbl_meshName.setText(meshname)
 		
 	def on_pb_stop_released(self):
 		self.play= False
+	
 	def on_pb_play_released(self):
 		
 		if self.mesh is None:
@@ -247,3 +223,8 @@ class SolarSystemWidget(QSolarSystemWidget,Ui_SolarSystemWidget):
 		self.play = False
 		self.pb_stop.setEnabled(False)
 		self.pb_play.setEnabled(True)
+
+	def onMeshChanged(self,name,img,path):
+		self.lbl_meshName.setText(name)
+		self.lbl_meshImage.setPixmap(QPixmap(img).scaled(self.lbl_meshImage.size(),QtCore.Qt.KeepAspectRatio))
+		self.mesh = Mesh.mesh.mesh

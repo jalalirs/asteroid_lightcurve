@@ -55,7 +55,7 @@
         <number>20</number>
        </property>
        <item>
-        <widget class="QPushButton" name="pbLight">
+        <widget class="QPushButton" name="pb_customSetup">
          <property name="minimumSize">
           <size>
            <width>80</width>
@@ -89,7 +89,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pbEarth">
+        <widget class="QPushButton" name="pb_solarSystem">
          <property name="enabled">
           <bool>true</bool>
          </property>
@@ -126,46 +126,9 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pbTrain">
+        <widget class="QPushButton" name="pb_gallery">
          <property name="enabled">
-          <bool>false</bool>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>80</width>
-           <height>80</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>80</width>
-           <height>80</height>
-          </size>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::NoFocus</enum>
-         </property>
-         <property name="toolTip">
-          <string>Explorer</string>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-         <property name="iconSize">
-          <size>
-           <width>64</width>
-           <height>64</height>
-          </size>
-         </property>
-         <property name="checkable">
           <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="pbTest">
-         <property name="enabled">
-          <bool>false</bool>
          </property>
          <property name="minimumSize">
           <size>
@@ -200,43 +163,6 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pbDeploy">
-         <property name="enabled">
-          <bool>false</bool>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>80</width>
-           <height>80</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>80</width>
-           <height>80</height>
-          </size>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::NoFocus</enum>
-         </property>
-         <property name="toolTip">
-          <string>Analize</string>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-         <property name="iconSize">
-          <size>
-           <width>64</width>
-           <height>64</height>
-          </size>
-         </property>
-         <property name="checkable">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item>
         <spacer name="verticalSpacer">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
@@ -249,53 +175,17 @@
          </property>
         </spacer>
        </item>
-       <item>
-        <widget class="QPushButton" name="pbSettings">
-         <property name="minimumSize">
-          <size>
-           <width>80</width>
-           <height>80</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>80</width>
-           <height>80</height>
-          </size>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::NoFocus</enum>
-         </property>
-         <property name="toolTip">
-          <string>Settings</string>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-         <property name="iconSize">
-          <size>
-           <width>64</width>
-           <height>64</height>
-          </size>
-         </property>
-         <property name="checkable">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
       </layout>
      </widget>
     </item>
     <item>
      <widget class="QStackedWidget" name="mainStackedWidget">
       <property name="currentIndex">
-       <number>1</number>
+       <number>2</number>
       </property>
-      <widget class="QWidget" name="pageLight"/>
-      <widget class="QWidget" name="pageEarth"/>
-      <widget class="QWidget" name="pageTrain"/>
-      <widget class="QWidget" name="pageTest"/>
-      <widget class="QWidget" name="pageDeploy"/>
+      <widget class="QWidget" name="pageCustomSetup"/>
+      <widget class="QWidget" name="pageSolarSystem"/>
+      <widget class="QWidget" name="pageGallery"/>
      </widget>
     </item>
    </layout>
@@ -305,8 +195,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1435</width>
-     <height>19</height>
+     <width>1080</width>
+     <height>24</height>
     </rect>
    </property>
   </widget>

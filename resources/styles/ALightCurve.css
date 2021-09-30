@@ -97,8 +97,7 @@ QListWidget#classesList::item:selected {
   background: rgb(255,255,191);
 }
 
-QPushButton#pbEarth, QPushButton#pbTrain,
-QPushButton#pbTest,QPushButton#pbDeploy,QPushButton#pbLight, QPushButton#pbSettings{ 
+QPushButton#pb_solarSystem, QPushButton#pb_gallery,QPushButton#pb_customSetup{ 
   color: rgb(200,200,200);
   background: transparent;
   border-radius: 0px;
@@ -107,30 +106,16 @@ QPushButton#pbTest,QPushButton#pbDeploy,QPushButton#pbLight, QPushButton#pbSetti
   border: 0px;
 }
 
-QPushButton#pbEarth { image: url(:/images/data-grey.png); }
-QPushButton#pbEarth:hover, QPushButton#pbEarth:checked { image: url(:/images/data-white.png); }
+QPushButton#pb_solarSystem { image: url(:/images/giga-powers-grey.png); }
+QPushButton#pb_solarSystem:hover, QPushButton#pb_solarSystem:checked { image: url(:/images/giga-powers-white.png); }
 
-QPushButton#pbTrain{ image: url(:/images/machine-training-grey.png); }
-QPushButton#pbTrain:hover, QPushButton#pbTrain:checked { image: url(:/images/machine-training-white.png); }
-
-QPushButton#pbTest { image: url(:/images/machine-testing-grey.png); }
-QPushButton#pbTest:hover, QPushButton#pbTest:checked { image: url(:/images/machine-testing-white.png); }
+QPushButton#pb_gallery{ image: url(:/images/gallery-grey.png); }
+QPushButton#pb_gallery:hover, QPushButton#pb_gallery:checked { image: url(:/images/gallery-white.png); }
 
 
-QPushButton#pbDeploy{ image: url(:/images/deploy-grey.png); }
-QPushButton#pbDeploy:hover, QPushButton#pbDeploy:checked { image: url(:/images/deploy-white.png); }
+QPushButton#pb_customSetup { image: url(:/images/data-grey.png); }
+QPushButton#pb_customSetup:hover, QPushButton#pb_customSetup:checked { image: url(:/images/data-white.png); }
 
-QPushButton#pbLight { image: url(:/images/giga-powers-grey.png); }
-QPushButton#pbLight:hover, QPushButton#pbLight:checked { image: url(:/images/giga-powers-white.png); }
-
-QPushButton#pbReport { image: url(:/images/storage_48.png); }
-QPushButton#pbReport:hover, QPushButton#pbReport:checked { image: url(:/images/storage_48_active.png); }
-
-QPushButton#pbTerminal { image: url(:/images/console_48.png); }
-QPushButton#pbTerminal:hover, QPushButton#pbTerminal:checked { image: url(:/images/console_48_active.png); }
-
-QPushButton#pbSettings { image: url(:/images/gear_48.png); }
-QPushButton#pbSettings:hover, QPushButton#pbSettings:checked { image: url(:/images/gear_48_active.png); }
 
 QWidget#messageBox * {  color: rgb(200,200,200); background:  rgb(51,51,51); border:0px;  }
 QWidget#messageBox QPushButton { background:  rgb(14,99,156); }

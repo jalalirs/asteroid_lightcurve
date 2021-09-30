@@ -1,4 +1,4 @@
-from . import customesetupwidget
+from . import customsetupwidget
 from . import solarsystemwidget
-CustomeSetupWidget = customesetupwidget.CustomeSetupWidget
+CustomSetupWidget = customsetupwidget.CustomSetupWidget
 SolarSystemWidget = solarsystemwidget.SolarSystemWidget

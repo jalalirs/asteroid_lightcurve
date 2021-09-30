@@ -18,9 +18,11 @@ from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 
 
-from widgets.lightcurve import CustomeSetupWidget
+from widgets.lightcurve import CustomSetupWidget
 from widgets.lightcurve import SolarSystemWidget
+from widgets.meshgallerywidget import MeshGalleryWidget
 import utils
+from widgets.config import GALLERY_PATH,GALLERY_ITEM_NO_PIC
 
 
 DIR = os.path.abspath(os.path.dirname(__file__))
@@ -36,27 +38,31 @@ class AstroidCurve(QMainWindow, Ui_MainWindow):
 		if stream.open(QIODevice.ReadOnly | QFile.Text):
 			self.setStyleSheet(QTextStream(stream).readAll())
 		
+
+		customSetupWidget = CustomSetupWidget(self)
+		self._customSetupWidget = customSetupWidget
+		customSetuplayout = QVBoxLayout()
+		customSetuplayout.addWidget(self._customSetupWidget)
+		self.pageCustomSetup.setLayout(customSetuplayout)
+
 		solarSystemWidget = SolarSystemWidget(self)
 		self._solarSystemWidget = solarSystemWidget
-		earthLayout = QVBoxLayout()
-		earthLayout.addWidget(solarSystemWidget)
-		self.pageEarth.setLayout(earthLayout)
+		solarSystemLayout = QVBoxLayout()
+		solarSystemLayout.addWidget(self._solarSystemWidget)
+		self.pageSolarSystem.setLayout(solarSystemLayout)
 
-		# trainingWidget = TrainingWidget(self)
-		# self._trainingWidget = trainingWidget
-		# trainingLayout = QVBoxLayout()
-		# trainingLayout.addWidget(trainingWidget)
-		# self.pageTrain.setLayout(trainingLayout)
+		galleryWidget = MeshGalleryWidget(GALLERY_PATH,GALLERY_ITEM_NO_PIC,self)
+		self._galleryWidget = galleryWidget
+		galleryLayout = QVBoxLayout()
+		galleryLayout.addWidget(galleryWidget)
+		self.pageGallery.setLayout(galleryLayout)
 
-		customeSetupWidget = CustomeSetupWidget(self)
-		self._customeSetupWidget = customeSetupWidget
-		lightlayout = QVBoxLayout()
-		lightlayout.addWidget(customeSetupWidget)
-		self.pageLight.setLayout(lightlayout)
 
-		#self.on_pbData_released()
+
 		self.mainStackedWidget.setCurrentIndex(0)
 		self.uncheck_and_keep(0)
+
+		
 
 	def uncheck_and_keep(self,keepindex):
 		toolbarButtons = self.toolbarWidget.findChildren(QtWidgets.QPushButton)
@@ -67,22 +73,15 @@ class AstroidCurve(QMainWindow, Ui_MainWindow):
 				b.setChecked(True)
 
 
-	def on_pbLight_released(self):
+	def on_pb_customSetup_released(self):
 		self.mainStackedWidget.setCurrentIndex(0)
 		self.uncheck_and_keep(0)
-	def on_pbEarth_released(self):
+	def on_pb_solarSystem_released(self):
 		self.mainStackedWidget.setCurrentIndex(1)
 		self.uncheck_and_keep(1)
-	def on_pbTest_released(self):
+	def on_pb_gallery_released(self):
 		self.mainStackedWidget.setCurrentIndex(2)
 		self.uncheck_and_keep(2)
-	def on_pbTrain_released(self):
-		self.mainStackedWidget.setCurrentIndex(3)
-		self.uncheck_and_keep(3)
-	
-	def on_pbDeploy_released(self):
-		self.mainStackedWidget.setCurrentIndex(4)
-		self.uncheck_and_keep(4)
 
 
 def except_hook(cls,exception,traceback):
