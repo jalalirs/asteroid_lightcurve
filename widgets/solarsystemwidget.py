@@ -224,6 +224,15 @@ class SolarSystemWidget(QSolarSystemWidget,Ui_SolarSystemWidget):
 		self.pb_stop.setEnabled(False)
 		self.pb_play.setEnabled(True)
 
+	def on_pb_checkStability(self):
+		if self.mesh is None:
+			qtutil.notify("You need to load a mesh first")
+			return
+		## Do logic here
+
+		stability = "" # result of logic
+		self.lbl_stability.setText(stability)
+	
 	def onMeshChanged(self,name,img,path):
 		self.lbl_meshName.setText(name)
 		self.lbl_meshImage.setPixmap(QPixmap(img).scaled(self.lbl_meshImage.size(),QtCore.Qt.KeepAspectRatio))

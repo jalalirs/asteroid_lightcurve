@@ -92,6 +92,9 @@ class AstroidCurve(QMainWindow, Ui_MainWindow):
 	def on_pb_lightCurve_released(self):
 		self.mainStackedWidget.setCurrentIndex(3)
 		self.uncheck_and_keep(3)
+	def on_pb_inertiaCalculater_released(self):
+		self.mainStackedWidget.setCurrentIndex(4)
+		self.uncheck_and_keep(4)
 
 def except_hook(cls,exception,traceback):
 	sys.__excepthook__(cls,exception,traceback)

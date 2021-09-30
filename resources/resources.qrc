@@ -17,6 +17,6 @@
         <file>images/machine-testing-white.png</file>
         <file>images/simulation-grey.png</file>
         <file>images/simulation-white.png</file>
-
+        
     </qresource>
 </RCC>
