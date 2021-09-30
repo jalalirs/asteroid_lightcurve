@@ -1,7 +1,7 @@
 # asteroid_lightcurve
 
 ## I.About:
-#### Asteroid Curve is a tool that enables scientists to study and create an asteroid light curve by rendering the 3D model, manipulating object's position, light source, simulation and observing settings. The simulation is based on accurate astronomical calculations, along side with NASA orbital databases.
+#### Asteroid Curve is a tool that enables scientists to study and create an asteroid light curve by rendering the 3D model, manipulating object's position, light source, simulation and observing settings. 
 #### This project is a submission for the [2021 NASA Space Apps Challenge](https://www.spaceappschallenge.org/about/). 
 #### More information on [our team's project](https://www.youtube.com/watch?v=3P302Ph8n6g).
 
@@ -17,7 +17,7 @@
 >[git](https://git-scm.com/downloads)
 
 #### Dependencies:
-***See `requiremets.txt`***
+***See `requirements.txt`***
 
 
 ### To install the tool in your device:
@@ -65,7 +65,7 @@ $ source nameOfEnv/bin/activate
 cd \<PathOfInstalledRepository>
 cd \asteroid_lightcurve-main
 ```
-on windows:
+on Windows:
 ```
 $ mkdir virtualenvs
 $ cd \virtualenvs
@@ -96,10 +96,10 @@ $ python AsteroidCurve.py
 ### I. X,Y,Z Positioning
 ### II. Orbital Positioning
 
-#### In x,y,z only positioning, the user is able to control where the light source, observer and asteroid can be, changing variables affecting the light curve appearance.
+#### In X, Y, Z only positioning, the user is able to control where the light source, observer and asteroid can be, changing variables affecting the light curve appearance.
 ![20210930181557_Trim (1)-min](https://user-images.githubusercontent.com/83130573/135499736-1eb66f1c-464a-4231-bdb8-7fba0dc305fc.gif)
 
-#### In Orbital positioning, the user can determine the trajectory of the orbiting 3D model from a given list, which will affect how the observer from earth will see the asteroid. Controlling other settings are also available to study the light curve affected by a wide range of variables.
+#### In Orbital positioning, the user can choose the trajectory of the orbiting 3D model from a given list, which will affect how the observer from earth will see the asteroid. Controlling other settings are also available to study the light curve affected by a wide range of variables.
 ![20210930174008_Trim-min](https://user-images.githubusercontent.com/83130573/135499921-12c35a1f-2778-49fd-a559-3a4dc323195c.gif)
 
 
