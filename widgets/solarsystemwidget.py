@@ -2,12 +2,12 @@
 
 
 
-from .. import qt_util as qtutil
+from . import qt_util as qtutil
 
 from .lineplot import LinePlot
 from .imgplot import ImagePlot
 from .orbitplotter import OrbitPlot
-from ..mesh import Mesh
+from .mesh import Mesh
 
 import numpy as np
 import os

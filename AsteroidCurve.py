@@ -18,9 +18,10 @@ from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 
 
-from widgets.lightcurve import CustomSetupWidget
-from widgets.lightcurve import SolarSystemWidget
+from widgets import CustomSetupWidget
+from widgets import SolarSystemWidget
 from widgets.meshgallerywidget import MeshGalleryWidget
+from widgets.lightcurvewidget import LightCurveWidget
 import utils
 from widgets.config import GALLERY_PATH,GALLERY_ITEM_NO_PIC
 
@@ -57,6 +58,12 @@ class AstroidCurve(QMainWindow, Ui_MainWindow):
 		galleryLayout.addWidget(galleryWidget)
 		self.pageGallery.setLayout(galleryLayout)
 
+		lightCurveWidget = LightCurveWidget(self)
+		self._lightCurveWidget = lightCurveWidget
+		lightCurveLayout = QVBoxLayout()
+		lightCurveLayout.addWidget(lightCurveWidget)
+		self.pageLightCurve.setLayout(lightCurveLayout)
+
 
 
 		self.mainStackedWidget.setCurrentIndex(0)
@@ -82,7 +89,9 @@ class AstroidCurve(QMainWindow, Ui_MainWindow):
 	def on_pb_gallery_released(self):
 		self.mainStackedWidget.setCurrentIndex(2)
 		self.uncheck_and_keep(2)
-
+	def on_pb_lightCurve_released(self):
+		self.mainStackedWidget.setCurrentIndex(3)
+		self.uncheck_and_keep(3)
 
 def except_hook(cls,exception,traceback):
 	sys.__excepthook__(cls,exception,traceback)
