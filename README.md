@@ -17,11 +17,6 @@
 >[git](https://git-scm.com/downloads)
 
 
->[meshreader](https://github.com/p-hofmann/MeshReader)
-
-
->[pyvoxelizer](https://github.com/p-hofmann/PyVoxelizer)
-
 #### Dependencies:
 ***See [requirements.txt](https://github.com/jalalirs/asteroid_lightcurve/blob/main/requirements.txt)***
 
