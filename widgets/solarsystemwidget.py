@@ -9,7 +9,7 @@ from .imgplot import ImagePlot
 from .orbitplotter import OrbitPlot
 from .mesh import Mesh
 from .lightcurve import LightCurve
-from voxlib.voxelize import voxelize, get_intersecting_voxels_depth_first, scale_and_shift_triangle
+
 
 
 
@@ -98,6 +98,7 @@ class SolarSystemWidget(QSolarSystemWidget,Ui_SolarSystemWidget):
 
 		Mesh.mesh.signal.connect(self.onMeshChanged)
 	def calculateStability(self):
+		from voxlib.voxelize import voxelize, get_intersecting_voxels_depth_first, scale_and_shift_triangle
 		resolution = 11
 		print("calculateStability")
 		objfile = Mesh.mesh.path
