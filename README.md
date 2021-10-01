@@ -17,7 +17,7 @@
 >[git](https://git-scm.com/downloads)
 
 #### Dependencies:
-***See `requirements.txt`***
+***See [requirements.txt](https://github.com/jalalirs/asteroid_lightcurve/blob/main/requirements.txt)***
 
 
 ### To install the tool in your device:
@@ -105,7 +105,7 @@ $ python AsteroidCurve.py
 
 ### To create a light curve:
 #### 1- Choose the positioning way you want from the bar 
-#### 2- Load the 3D model from `laod model` choose from the provided models in `Gallery`. ***note: the tool accepts .obj format only.***
+#### 2- Load the 3D model from `load model` choose from the provided models in `Gallery`. ***note: the tool accepts .obj format only.***
 #### 3- Change variables of observing, light, object, simulation settings from tabs.
 #### 4- Click `play` and see your asteroid rotating and creating beautiful light curves!
 
