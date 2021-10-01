@@ -17,7 +17,7 @@
 >[git](https://git-scm.com/downloads)
 
 #### Dependencies:
-***See `requirements.txt`***
+***See [requirements.txt](https://github.com/jalalirs/asteroid_lightcurve/blob/main/requirements.txt)***
 
 
 ### To install the tool in your device:
