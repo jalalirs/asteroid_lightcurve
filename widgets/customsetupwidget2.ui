@@ -225,7 +225,7 @@
                     <item>
                      <widget class="QLineEdit" name="ln_cameraX">
                       <property name="text">
-                       <string>98.22</string>
+                       <string>10</string>
                       </property>
                      </widget>
                     </item>
@@ -239,7 +239,7 @@
                     <item>
                      <widget class="QLineEdit" name="ln_cameraY">
                       <property name="text">
-                       <string>0</string>
+                       <string>10</string>
                       </property>
                      </widget>
                     </item>
@@ -253,7 +253,7 @@
                     <item>
                      <widget class="QLineEdit" name="ln_cameraZ">
                       <property name="text">
-                       <string>0</string>
+                       <string>10</string>
                       </property>
                      </widget>
                     </item>
@@ -280,7 +280,7 @@
                     <item>
                      <widget class="QLineEdit" name="ln_cameraRX">
                       <property name="text">
-                       <string>270</string>
+                       <string>-90</string>
                       </property>
                      </widget>
                     </item>
@@ -294,7 +294,7 @@
                     <item>
                      <widget class="QLineEdit" name="ln_cameraRY">
                       <property name="text">
-                       <string>331.75</string>
+                       <string>0</string>
                       </property>
                      </widget>
                     </item>
@@ -412,7 +412,7 @@
                     <item>
                      <widget class="QLineEdit" name="ln_meshX">
                       <property name="text">
-                       <string>12.03</string>
+                       <string>10</string>
                       </property>
                      </widget>
                     </item>
@@ -426,7 +426,7 @@
                     <item>
                      <widget class="QLineEdit" name="ln_meshY">
                       <property name="text">
-                       <string>160</string>
+                       <string>10</string>
                       </property>
                      </widget>
                     </item>
@@ -440,7 +440,7 @@
                     <item>
                      <widget class="QLineEdit" name="ln_meshZ">
                       <property name="text">
-                       <string>0</string>
+                       <string>10</string>
                       </property>
                      </widget>
                     </item>

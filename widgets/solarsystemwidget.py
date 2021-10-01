@@ -4,10 +4,12 @@
 
 from . import qt_util as qtutil
 
-from .lineplot import LinePlot
+from .lightcurveplot import LightCurvePlot
 from .imgplot import ImagePlot
 from .orbitplotter import OrbitPlot
 from .mesh import Mesh
+from .lightcurve import LightCurve
+
 
 import numpy as np
 import os
@@ -21,11 +23,13 @@ from pyrender.constants import RenderFlags as RenderFlags
 from poliastro.bodies import Earth,Mars
 from astropy.time import Time
 from poliastro.ephem import  Ephem
+
 import math
 
 from PyQt5 import QtCore, QtGui, QtWidgets, uic
 from PyQt5.QtWidgets import QWidget
 from PyQt5.QtGui import QIcon, QPixmap
+
 
 
 DIR = os.path.abspath(os.path.dirname(__file__))
@@ -73,6 +77,13 @@ class SolarSystemWidget(QSolarSystemWidget,Ui_SolarSystemWidget):
 		self.r = pyrender.OffscreenRenderer(400, 400)
 		self.mesh = None
 		self.play = False
+
+		self.lineX = None
+		self.lineY = None
+		self.currentStart = None
+		self.minY = None
+		self.maxY = None
+
 		Mesh.mesh.signal.connect(self.onMeshChanged)
 
 	def clear_scene(self):
@@ -86,16 +97,13 @@ class SolarSystemWidget(QSolarSystemWidget,Ui_SolarSystemWidget):
 		self.orbitplot = OrbitPlot(self.orbitWidget,width = self.lineCurveWidget.width(),
 			height=self.lineCurveWidget.height())
 		self.orbitLayout.addWidget(self.orbitplot)
-
-
-		
 		
 		self.renderedImagePlot = ImagePlot(self.renderedImageWidget,width = self.renderedImageWidget.width(),
 			height=self.renderedImageWidget.height())
 		self.renderedImageLayout.addWidget(self.renderedImagePlot)
 		
 
-		self.lineplot = LinePlot(self.lineCurveWidget,width = self.lineCurveWidget.width(),
+		self.lineplot = LightCurvePlot(self.lineCurveWidget,width = self.lineCurveWidget.width(),
 			height=self.lineCurveWidget.height())
 		self.lineCurveLayout.addWidget(self.lineplot)
 		
@@ -123,6 +131,14 @@ class SolarSystemWidget(QSolarSystemWidget,Ui_SolarSystemWidget):
 			return
 		self.pb_play.setEnabled(False)
 		self.pb_stop.setEnabled(True)
+		self.pb_showObserved.setEnabled(False)
+		self.pb_normalize.setEnabled(False)
+		self.pb_shiftLeft.setEnabled(False)
+		self.pb_shiftRight.setEnabled(False)
+		self.pb_normalize.setChecked(False)
+		self.pb_showObserved.setChecked(False)
+
+
 		self.play = True
 		sin,cos,rad = np.sin,np.cos,np.deg2rad
 		tran = lambda tx,ty,tz: np.array([[1,0,0,tx],[0,1,0,ty],[0,0,1,tz],[0,0,0,1]])
@@ -192,15 +208,18 @@ class SolarSystemWidget(QSolarSystemWidget,Ui_SolarSystemWidget):
 
 		period = float(self.ln_period.text())
 		dt = float(self.ln_dt.text())
-		shotterSpeed = float(self.ln_shutterSpeed.text())
+		shutterSpeed = float(self.ln_shutterSpeed.text())
 		wX,wY,wZ = float(self.ln_wX.text()),float(self.ln_wY.text()),float(self.ln_wZ.text())
 		
 		time = 0
 		shotTime = 0
 		y = []
-		currentIntensity = 0#np.zeros((400,400,3))
-		line = np.array([0]*int(period/shotterSpeed))
+		currentIntensity = 0
+		self.lineY = np.array([0]*int(period/shutterSpeed))
+		self.lineX = np.array([0]*int(period/shutterSpeed))
 		lineCount = 0
+		self.currentStart = 0
+		self.currentEnd = self.lineY.size
 		while time < period and self.play:
 			time += dt
 			shotTime += dt
@@ -214,15 +233,80 @@ class SolarSystemWidget(QSolarSystemWidget,Ui_SolarSystemWidget):
 			color[depth == 0] = 0
 			currentIntensity += color.sum()
 			self.renderedImagePlot.plot(color,clear=True)
-			if shotTime >= shotterSpeed:
+			if shotTime >= shutterSpeed and lineCount < self.lineY.size:
 				shotTime = 0
-				line[lineCount] = currentIntensity#currentIntensity.sum()
-				self.lineplot.plot(line[:lineCount+1],clear = lineCount == 0)
+				self.lineY[lineCount] = currentIntensity
+				self.lineX[lineCount] = time
+				self.lineplot.plot(self.lineX[:lineCount+1],self.lineY[:lineCount+1],clear = lineCount == 0,color="blue")
 				lineCount += 1
 				currentIntensity =0
+		# in case it was stopped
+		self.lineX = self.lineX[:lineCount]
+		self.lineY = self.lineY[:lineCount]
+		self.minY = self.lineY.min()
+		self.maxY = self.lineY.max()
+		
 		self.play = False
 		self.pb_stop.setEnabled(False)
 		self.pb_play.setEnabled(True)
+		self.pb_showObserved.setEnabled(True)
+		self.pb_normalize.setEnabled(True)
+		if self.lineX.size > 1:
+			self.pb_shiftLeft.setEnabled(True)
+		self.pb_shiftRight.setEnabled(False)
+	def on_pb_shiftLeft_released(self):
+		self.currentStart = self.currentStart + 1
+		if self.currentStart + 1 == self.lineY.size-1:
+			self.pb_shiftLeft.setEnabled(False)
+		if self.currentStart != 0:
+			self.pb_shiftRight.setEnabled(True)
+		self.plot()
+	def on_pb_shiftRight_released(self):
+		self.currentStart = self.currentStart - 1
+		if self.currentStart == 0:
+			self.pb_shiftRight.setEnabled(False)
+		if self.currentStart != self.lineY.size-1:
+			self.pb_shiftLeft.setEnabled(True)
+		self.plot()
+	
+	def on_pb_normalize_released(self):
+		self.plot()
+
+	def plot(self):
+		simulatedX = self.lineX
+		simulatedY = self.lineY
+		observedX = []
+		observedY = []
+		if LightCurve.inUse is not None:
+			lightcurve = LightCurve.inUse
+			jds = lightcurve.jd
+			jdmin = Time(jds[0],format="jd").to_datetime()
+			observedX = [0]
+			for jd in jds[1:]:
+				observedX.append((Time(jd,format="jd").to_datetime()-jdmin).seconds)
+			observedX = np.array(observedX)
+			observedY = np.array(lightcurve.mag)
+		if self.pb_normalize.isChecked():
+			observedY = (observedY-observedY.min())/(observedY.max()-observedY.min())
+			simulatedY = (self.lineY-self.minY)/(self.maxY-self.minY)
+		simulatedX = simulatedX[0:simulatedX.size-self.currentStart]
+		simulatedY = simulatedY[self.currentStart:]
+		self.lineplot.plot(simulatedX,simulatedY,clear = True,color="blue")
+		if self.pb_showObserved.isChecked():
+			self.lineplot.plot(observedX,observedY,dot=True,clear = False,color="red")
+
+	
+
+	def on_pb_showObserved_released(self):
+		if LightCurve.inUse is None:
+			notify("No observed data loaded")
+			self.pb_showObserved.setChecked(False)
+			return
+		self.plot()
+				
+			
+		
+		
 
 	def on_pb_checkStability(self):
 		if self.mesh is None:

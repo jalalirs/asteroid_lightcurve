@@ -8,6 +8,7 @@ from PyQt5.QtCore import Qt,QObject
 import glob
 from .qt_util import notify
 from .lightcurveplot import LightCurvePlot
+from .lightcurve import LightCurve
 
 import requests
 from bs4 import BeautifulSoup as bs
@@ -20,13 +21,7 @@ API_ENDPOINT = "https://alcdef.org/php/alcdef_GenerateALCDEFPage.php"
 DIR = os.path.abspath(os.path.dirname(__file__))
 QLightCurveWidget, Ui_LightCurveWidget = uic.loadUiType(os.path.join(DIR, "lightcurveWidget.ui"), resource_suffix='') 
 
-class Curve:
-     def __init__(self,run):
-        self.run = run
-        self.metadata = {}
-        self.mag = []
-        self.jd = []
-        self.err = []
+
 
 class RetrieveWorker(QObject):
     retrievingCompleted = QtCore.pyqtSignal(list)
@@ -59,7 +54,7 @@ class RetrieveWorker(QObject):
         ccount = 0
         curves = []
         while index < len(lines):
-            c = Curve(ccount)
+            c = LightCurve(ccount)
             index += 1 # skipping STARTMETADATA
             while lines[index].strip() != "ENDMETADATA":
                 index += 1
@@ -102,6 +97,7 @@ class LightCurveWidget(QLightCurveWidget, Ui_LightCurveWidget):
         #TODO: create new thread upon clicking
         self._rthread.start()
         self.items = []
+        self.currentRow = None
 
     def __init_plots(self):	
         self.lightcurveplot = LightCurvePlot(self.lightCurveWidget,width = self.lightCurveWidget.width(),
@@ -110,6 +106,7 @@ class LightCurveWidget(QLightCurveWidget, Ui_LightCurveWidget):
     
     def on_lst_runs_currentRowChanged(self,row):
         selectedItem = self.items[row]
+        self.currentRow = row
         self.lightcurveplot.plot(np.array(selectedItem.jd),np.array(selectedItem.mag),np.array(selectedItem.err))
 
     def on_pb_retrieve_released(self):
@@ -133,3 +130,11 @@ class LightCurveWidget(QLightCurveWidget, Ui_LightCurveWidget):
          
         self.pb_retrieve.setEnabled(True)
         self.progressBar.setVisible(False)
+
+    def on_pb_use_released(self):
+        if self.currentRow is None:
+            notify("Select a curve first","error")
+            return
+        selectedItem = self.items[self.currentRow]
+        LightCurve.inUse = selectedItem
+        notify(f"Curve {selectedItem.metadata['LCBLOCKID']} is in use now","info")

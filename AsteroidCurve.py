@@ -66,8 +66,8 @@ class AstroidCurve(QMainWindow, Ui_MainWindow):
 
 
 
-		self.mainStackedWidget.setCurrentIndex(0)
-		self.uncheck_and_keep(0)
+		self.mainStackedWidget.setCurrentIndex(1)
+		self.uncheck_and_keep(1)
 
 		
 
