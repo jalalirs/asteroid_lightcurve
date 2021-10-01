@@ -106,18 +106,18 @@ QPushButton#pb_solarSystem, QPushButton#pb_gallery,QPushButton#pb_customSetup,QP
   border: 0px;
 }
 
-QPushButton#pb_solarSystem { image: url(:/images/giga-powers-grey.png); }
-QPushButton#pb_solarSystem:hover, QPushButton#pb_solarSystem:checked { image: url(:/images/giga-powers-white.png); }
+QPushButton#pb_solarSystem { image: url(:/images/orbit-grey.png); }
+QPushButton#pb_solarSystem:hover, QPushButton#pb_solarSystem:checked { image: url(:/images/orbit-white.png); }
 
-QPushButton#pb_gallery{ image: url(:/images/gallery-grey.png); }
-QPushButton#pb_gallery:hover, QPushButton#pb_gallery:checked { image: url(:/images/gallery-white.png); }
+QPushButton#pb_gallery{ image: url(:/images/gallery1-grey.png); }
+QPushButton#pb_gallery:hover, QPushButton#pb_gallery:checked { image: url(:/images/gallery1-white.png); }
 
 
-QPushButton#pb_customSetup { image: url(:/images/data-grey.png); }
-QPushButton#pb_customSetup:hover, QPushButton#pb_customSetup:checked { image: url(:/images/data-white.png); }
+QPushButton#pb_customSetup { image: url(:/images/xyz-grey.png); }
+QPushButton#pb_customSetup:hover, QPushButton#pb_customSetup:checked { image: url(:/images/xyz-white.png); }
 
-QPushButton#pb_lightCurve { image: url(:/images/data-grey.png); }
-QPushButton#pb_lightCurve:hover, QPushButton#pb_lightCurve:checked { image: url(:/images/data-white.png); }
+QPushButton#pb_lightCurve { image: url(:/images/curveData-grey.png); }
+QPushButton#pb_lightCurve:hover, QPushButton#pb_lightCurve:checked { image: url(:/images/curveData-white.png); }
 
 
 QWidget#messageBox * {  color: rgb(200,200,200); background:  rgb(51,51,51); border:0px;  }

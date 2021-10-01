@@ -72,14 +72,6 @@ class CustomSetupWidget(QCustomSetupWidget,Ui_CustomSetupWidget):
 	def __enable_all_widgets(self,widget):
 		for c in widget.findChildren(QWidget):
 			c.setEnabled(True)
-
-	def on_pbLoadAsteroid_released(self):
-		path = qtutil.browse("openfile")
-		if not path:
-			return
-		meshname = path.split("/")[-1].split(".")[0]
-		Mesh.load_mesh(path)
-		self.lbl_meshName.setText(meshname)
 		
 	def on_pb_stop_released(self):
 		self.play= False

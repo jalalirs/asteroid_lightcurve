@@ -67,8 +67,8 @@ class AstroidCurve(QMainWindow, Ui_MainWindow):
 
 
 
-		self.mainStackedWidget.setCurrentIndex(2)
-		self.uncheck_and_keep(2)
+		self.mainStackedWidget.setCurrentIndex(0)
+		self.uncheck_and_keep(0)
 
 		
 
@@ -82,20 +82,18 @@ class AstroidCurve(QMainWindow, Ui_MainWindow):
 
 
 	def on_pb_customSetup_released(self):
-		self.mainStackedWidget.setCurrentIndex(0)
-		self.uncheck_and_keep(0)
-	def on_pb_solarSystem_released(self):
-		self.mainStackedWidget.setCurrentIndex(1)
-		self.uncheck_and_keep(1)
-	def on_pb_gallery_released(self):
-		self.mainStackedWidget.setCurrentIndex(2)
-		self.uncheck_and_keep(2)
-	def on_pb_lightCurve_released(self):
 		self.mainStackedWidget.setCurrentIndex(3)
 		self.uncheck_and_keep(3)
-	def on_pb_inertiaCalculater_released(self):
-		self.mainStackedWidget.setCurrentIndex(4)
-		self.uncheck_and_keep(4)
+	def on_pb_solarSystem_released(self):
+		self.mainStackedWidget.setCurrentIndex(2)
+		self.uncheck_and_keep(2)
+	def on_pb_gallery_released(self):
+		self.mainStackedWidget.setCurrentIndex(0)
+		self.uncheck_and_keep(0)
+	def on_pb_lightCurve_released(self):
+		self.mainStackedWidget.setCurrentIndex(1)
+		self.uncheck_and_keep(1)
+
 
 def except_hook(cls,exception,traceback):
 	sys.__excepthook__(cls,exception,traceback)

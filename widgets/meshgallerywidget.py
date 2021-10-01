@@ -10,6 +10,7 @@ import glob
 from .meshlistitemwidget import MeshListItemWidget
 from .qt_util import notify
 from .mesh import Mesh
+from . import qt_util as qtutil
 
 DIR = os.path.abspath(os.path.dirname(__file__))
 QMeshGalleryWidget, Ui_MeshGalleryWidget = uic.loadUiType(os.path.join(DIR, "meshgallerywidget.ui"), resource_suffix='') 
@@ -69,4 +70,11 @@ class MeshGalleryWidget(QMeshGalleryWidget, Ui_MeshGalleryWidget):
         Mesh.load_mesh(path)
         notify("Mesh is loaded","info")
     
+    def on_pb_loadLocal_released(self):
+        path = qtutil.browse("openfile")
+        if not path:   
+            return
+        meshname = path.split("/")[-1].split(".")[0]
+        Mesh.load_mesh(path)
+        notify("Mesh is loaded","info")
             

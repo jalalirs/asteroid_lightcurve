@@ -1,22 +1,13 @@
 <RCC>
     <qresource prefix="/">
-        <file>styles/iStudio.css</file>
-        <file>images/qcustomtemplate.png</file>
-        <file>images/training_vs_validation.jpg</file>
-        <file>images/conv_filter.png</file>
-        <file>images/play_button.png</file>
-        <file>images/data-grey.png</file>
-        <file>images/data-white.png</file>
-        <file>images/deploy-grey.png</file>
-        <file>images/deploy-white.png</file>
-        <file>images/gallery-grey.png</file>
-        <file>images/gallery-white.png</file>
-        <file>images/giga-powers-grey.png</file>
-        <file>images/giga-powers-white.png</file>
-        <file>images/machine-testing-grey.png</file>
-        <file>images/machine-testing-white.png</file>
-        <file>images/simulation-grey.png</file>
-        <file>images/simulation-white.png</file>
-        
+        <file>styles/ALightCurve.css</file>
+        <file>images/curveData-grey.png</file>
+        <file>images/curveData-white.png</file>
+        <file>images/gallery1-grey.png</file>
+        <file>images/gallery1-white.png</file>
+        <file>images/orbit-grey.png</file>
+        <file>images/orbit-white.png</file>
+        <file>images/xyz-grey.png</file>
+        <file>images/xyz-white.png</file>
     </qresource>
 </RCC>

@@ -80,9 +80,16 @@
        </spacer>
       </item>
       <item>
+       <widget class="QPushButton" name="pb_loadLocal">
+        <property name="text">
+         <string>Load your own</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QPushButton" name="pb_load">
         <property name="text">
-         <string>Load</string>
+         <string>Load from gallary</string>
         </property>
        </widget>
       </item>
