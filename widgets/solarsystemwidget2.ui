@@ -412,14 +412,14 @@
                     <item>
                      <widget class="QLabel" name="label_11">
                       <property name="text">
-                       <string>yfov</string>
+                       <string>Field of view</string>
                       </property>
                      </widget>
                     </item>
                     <item>
                      <widget class="QLineEdit" name="ln_cameraYfov">
                       <property name="text">
-                       <string>0.3</string>
+                       <string>0.1</string>
                       </property>
                      </widget>
                     </item>
@@ -536,7 +536,7 @@
                     <item>
                      <widget class="QLineEdit" name="ln_lightIntensity">
                       <property name="text">
-                       <string>5000000000</string>
+                       <string>500000</string>
                       </property>
                      </widget>
                     </item>
@@ -591,7 +591,7 @@
                     <item>
                      <widget class="QLabel" name="label_10">
                       <property name="text">
-                       <string>Period (s)</string>
+                       <string>Simulation time (s)</string>
                       </property>
                      </widget>
                     </item>
@@ -617,7 +617,7 @@
                     <item>
                      <widget class="QLabel" name="label_24">
                       <property name="text">
-                       <string>Dt (s)</string>
+                       <string>Time step (s)</string>
                       </property>
                      </widget>
                     </item>
