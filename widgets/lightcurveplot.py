@@ -32,7 +32,7 @@ class LightCurvePlot(FigureCanvas):
 		FigureCanvas.updateGeometry(self)
 		self._ax = self.fig.gca()
 
-	def plot(self,x,y,error=None,dot=False,xticks=None,color="red",clear=False,maxy=None,title=None):
+	def plot(self,x,y,error=None,dot=False,xticks=None,flipy=False,color="red",clear=False,maxy=None,title=None):
 		if clear:
 			self._ax.clear()
 		if not maxy:
@@ -46,8 +46,8 @@ class LightCurvePlot(FigureCanvas):
 			self._pts = self._ax.plot(x,y,'ro',c=color)
 		else:
 			self._pts = self._ax.plot(x,y,c=color)
-
-		self._ax.invert_yaxis()
+		if flipy:
+			self._ax.invert_yaxis()
 
 		if xticks is not None:
 			resadjust(self._ax,x,xticks)

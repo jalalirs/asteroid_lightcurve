@@ -9,6 +9,8 @@ from .imgplot import ImagePlot
 from .orbitplotter import OrbitPlot
 from .mesh import Mesh
 from .lightcurve import LightCurve
+from voxlib.voxelize import voxelize, get_intersecting_voxels_depth_first, scale_and_shift_triangle
+
 
 
 import numpy as np
@@ -34,6 +36,16 @@ from PyQt5.QtGui import QIcon, QPixmap
 
 DIR = os.path.abspath(os.path.dirname(__file__))
 QSolarSystemWidget, Ui_SolarSystemWidget = uic.loadUiType(os.path.join(DIR, "solarsystemwidget2.ui"), resource_suffix='') 
+
+
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.integrate import dblquad
+from scipy.integrate import tplquad
+import pandas as pd
+
+
+
 
 
 
@@ -85,7 +97,48 @@ class SolarSystemWidget(QSolarSystemWidget,Ui_SolarSystemWidget):
 		self.maxY = None
 
 		Mesh.mesh.signal.connect(self.onMeshChanged)
+	def calculateStability(self):
+		resolution = 11
+		print("calculateStability")
+		objfile = Mesh.mesh.path
+		coords = np.array(list(set(voxelize(objfile, resolution))))
 
+		#coords[[1, 2]] = coords[[2, 1]]
+		coords = coords/max(coords.ravel())
+		x, y, z  = coords[:,0],coords[:,1],coords[:,2]
+
+
+		# x_mean, y_mean = np.mean(x), np.mean(y)
+		# z_max = max(z)
+		# P0 = x0, y0, z0 = x_mean, y_mean, z_max
+		# coords = coords - P0
+		# #coords = coords.T
+		# x, y, z  = coords[:,0],coords[:,1],coords[:,2]
+
+
+		N = coords.shape[1]
+		Ix = sum(coords[1]**2 + coords[2]**2)/N
+		Iy = sum(coords[0]**2 + coords[2]**2)/N
+		Iz = sum(coords[0]**2 + coords[1]**2)/N
+		Ixy = sum(coords[0]*coords[1])/N
+		Iyz = sum(coords[1]*coords[2])/N
+		Ixz = sum(coords[0]*coords[2])/N
+		Wx, Wy,Wz = float(self.ln_iwX.text()),float(self.ln_iwY.text()),float(self.ln_iwZ.text())
+		if Wx > Wy and Wx > Wz:
+			maxVel = 1
+		elif Wy > Wx and Wy > Wz:
+			maxVel = 2
+		else:
+			maxVel = 3
+
+		if Ix > Iy and Ix > Iz:
+			maxInertia = 1
+		elif Iy > Ix and Iy > Iz:
+			maxInertia = 2
+		else:
+			maxInertia =3
+		print("calculateStability")
+		return maxVel == maxInertia
 	def clear_scene(self):
 		for n in self.sceneNodes:
 			try:
@@ -208,6 +261,9 @@ class SolarSystemWidget(QSolarSystemWidget,Ui_SolarSystemWidget):
 
 		period = float(self.ln_period.text())
 		dt = float(self.ln_dt.text())
+		if dt > period:
+			notify("Dt should smaller than period","error")
+			return
 		shutterSpeed = float(self.ln_shutterSpeed.text())
 		wX,wY,wZ = float(self.ln_wX.text()),float(self.ln_wY.text()),float(self.ln_wZ.text())
 		
@@ -240,6 +296,7 @@ class SolarSystemWidget(QSolarSystemWidget,Ui_SolarSystemWidget):
 				self.lineplot.plot(self.lineX[:lineCount+1],self.lineY[:lineCount+1],clear = lineCount == 0,color="blue")
 				lineCount += 1
 				currentIntensity =0
+		#self.lineY = 1/self.lineY
 		# in case it was stopped
 		self.lineX = self.lineX[:lineCount]
 		self.lineY = self.lineY[:lineCount]
@@ -254,6 +311,7 @@ class SolarSystemWidget(QSolarSystemWidget,Ui_SolarSystemWidget):
 		if self.lineX.size > 1:
 			self.pb_shiftLeft.setEnabled(True)
 		self.pb_shiftRight.setEnabled(False)
+	
 	def on_pb_shiftLeft_released(self):
 		self.currentStart = self.currentStart + 1
 		if self.currentStart + 1 == self.lineY.size-1:
@@ -261,6 +319,7 @@ class SolarSystemWidget(QSolarSystemWidget,Ui_SolarSystemWidget):
 		if self.currentStart != 0:
 			self.pb_shiftRight.setEnabled(True)
 		self.plot()
+	
 	def on_pb_shiftRight_released(self):
 		self.currentStart = self.currentStart - 1
 		if self.currentStart == 0:
@@ -286,6 +345,7 @@ class SolarSystemWidget(QSolarSystemWidget,Ui_SolarSystemWidget):
 				observedX.append((Time(jd,format="jd").to_datetime()-jdmin).seconds)
 			observedX = np.array(observedX)
 			observedY = np.array(lightcurve.mag)
+			observedY = observedY.max() - (observedY - observedY.min())
 		if self.pb_normalize.isChecked():
 			observedY = (observedY-observedY.min())/(observedY.max()-observedY.min())
 			simulatedY = (self.lineY-self.minY)/(self.maxY-self.minY)
@@ -295,8 +355,6 @@ class SolarSystemWidget(QSolarSystemWidget,Ui_SolarSystemWidget):
 		if self.pb_showObserved.isChecked():
 			self.lineplot.plot(observedX,observedY,dot=True,clear = False,color="red")
 
-	
-
 	def on_pb_showObserved_released(self):
 		if LightCurve.inUse is None:
 			notify("No observed data loaded")
@@ -304,18 +362,15 @@ class SolarSystemWidget(QSolarSystemWidget,Ui_SolarSystemWidget):
 			return
 		self.plot()
 				
-			
-		
-		
-
-	def on_pb_checkStability(self):
-		if self.mesh is None:
+	def on_pb_checkStability_released(self):
+		if Mesh.mesh.path is None:
 			qtutil.notify("You need to load a mesh first")
 			return
-		## Do logic here
-
-		stability = "" # result of logic
-		self.lbl_stability.setText(stability)
+		self.lbl_stability.setText("")
+		if self.calculateStability():
+			self.lbl_stability.setText("Object is stable")
+		else:
+			self.lbl_stability.setText("Object is not stable")
 	
 	def onMeshChanged(self,name,img,path):
 		self.lbl_meshName.setText(name)

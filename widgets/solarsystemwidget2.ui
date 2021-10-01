@@ -176,7 +176,7 @@
              <item>
               <widget class="QTabWidget" name="tabWidget">
                <property name="currentIndex">
-                <number>1</number>
+                <number>0</number>
                </property>
                <widget class="QWidget" name="tab">
                 <attribute name="title">
@@ -354,7 +354,7 @@
                     <item>
                      <widget class="QLineEdit" name="ln_wZ">
                       <property name="text">
-                       <string>0.01666666</string>
+                       <string>0.01915</string>
                       </property>
                      </widget>
                     </item>
@@ -413,7 +413,7 @@
                     <item>
                      <widget class="QLineEdit" name="ln_cameraYfov">
                       <property name="text">
-                       <string>0.02</string>
+                       <string>0.3</string>
                       </property>
                      </widget>
                     </item>
@@ -493,12 +493,12 @@
                      <widget class="QComboBox" name="cmb_lightType">
                       <item>
                        <property name="text">
-                        <string>Point</string>
+                        <string>Directional</string>
                        </property>
                       </item>
                       <item>
                        <property name="text">
-                        <string>Directional</string>
+                        <string>Point</string>
                        </property>
                       </item>
                       <item>
@@ -592,7 +592,7 @@
                     <item>
                      <widget class="QLineEdit" name="ln_period">
                       <property name="text">
-                       <string>10000</string>
+                       <string>40000</string>
                       </property>
                      </widget>
                     </item>
@@ -669,7 +669,7 @@
                      </widget>
                     </item>
                     <item>
-                     <widget class="QLineEdit" name="ln_wX_2">
+                     <widget class="QLineEdit" name="ln_iwX">
                       <property name="text">
                        <string>10</string>
                       </property>
@@ -683,7 +683,7 @@
                      </widget>
                     </item>
                     <item>
-                     <widget class="QLineEdit" name="ln_wY_2">
+                     <widget class="QLineEdit" name="ln_iwY">
                       <property name="text">
                        <string>0</string>
                       </property>
@@ -697,7 +697,7 @@
                      </widget>
                     </item>
                     <item>
-                     <widget class="QLineEdit" name="ln_wZ_2">
+                     <widget class="QLineEdit" name="ln_iwZ">
                       <property name="text">
                        <string>0</string>
                       </property>

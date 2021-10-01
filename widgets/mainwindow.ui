@@ -218,13 +218,12 @@
     <item>
      <widget class="QStackedWidget" name="mainStackedWidget">
       <property name="currentIndex">
-       <number>2</number>
+       <number>3</number>
       </property>
       <widget class="QWidget" name="pageCustomSetup"/>
       <widget class="QWidget" name="pageSolarSystem"/>
       <widget class="QWidget" name="pageGallery"/>
       <widget class="QWidget" name="pageLightCurve"/>
-      <widget class="QWidget" name="pageInertiaCalculator"/>
      </widget>
     </item>
    </layout>

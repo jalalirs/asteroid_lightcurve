@@ -56,7 +56,7 @@ class RetrieveWorker(QObject):
         while index < len(lines):
             c = LightCurve(ccount)
             index += 1 # skipping STARTMETADATA
-            while lines[index].strip() != "ENDMETADATA":
+            while index < len(lines) and lines[index].strip() != "ENDMETADATA":
                 index += 1
                 p = lines[index].split("=")
                 if len(p)==1:
@@ -64,15 +64,17 @@ class RetrieveWorker(QObject):
                 else:
                     c.metadata[p[0]] = p[1]
             index += 1
-            while lines[index].strip() != "ENDDATA":
+            while index < len(lines) and  lines[index].strip() != "ENDDATA":
                 p = lines[index].split("|")
                 
                 c.jd.append(float(p[0].split("=")[-1]))
                 c.mag.append(float(p[1]))
                 c.err.append(float(p[2]))
                 index += 1
+            
             ccount += 1
-            curves.append(c)
+            if len(c.jd) > 0:
+                curves.append(c)
             index +=1
         return curves
     def run(self,objid):
@@ -107,7 +109,7 @@ class LightCurveWidget(QLightCurveWidget, Ui_LightCurveWidget):
     def on_lst_runs_currentRowChanged(self,row):
         selectedItem = self.items[row]
         self.currentRow = row
-        self.lightcurveplot.plot(np.array(selectedItem.jd),np.array(selectedItem.mag),np.array(selectedItem.err))
+        self.lightcurveplot.plot(np.array(selectedItem.jd),np.array(selectedItem.mag),np.array(selectedItem.err),flipy=True)
 
     def on_pb_retrieve_released(self):
         objid = self.ln_objId.text().strip()

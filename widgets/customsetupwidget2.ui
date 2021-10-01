@@ -280,7 +280,7 @@
                     <item>
                      <widget class="QLineEdit" name="ln_cameraRX">
                       <property name="text">
-                       <string>-90</string>
+                       <string>0.9</string>
                       </property>
                      </widget>
                     </item>
@@ -294,7 +294,7 @@
                     <item>
                      <widget class="QLineEdit" name="ln_cameraRY">
                       <property name="text">
-                       <string>0</string>
+                       <string>-180</string>
                       </property>
                      </widget>
                     </item>
@@ -467,7 +467,7 @@
                     <item>
                      <widget class="QLineEdit" name="ln_wX">
                       <property name="text">
-                       <string>10</string>
+                       <string>0</string>
                       </property>
                      </widget>
                     </item>
@@ -481,7 +481,7 @@
                     <item>
                      <widget class="QLineEdit" name="ln_wY">
                       <property name="text">
-                       <string>0</string>
+                       <string>10</string>
                       </property>
                      </widget>
                     </item>
@@ -613,12 +613,12 @@
                      <widget class="QComboBox" name="cmb_lightType">
                       <item>
                        <property name="text">
-                        <string>Point</string>
+                        <string>Directional</string>
                        </property>
                       </item>
                       <item>
                        <property name="text">
-                        <string>Directional</string>
+                        <string>Point</string>
                        </property>
                       </item>
                       <item>
@@ -644,7 +644,7 @@
                     <item>
                      <widget class="QLineEdit" name="ln_lightStrength">
                       <property name="text">
-                       <string>100</string>
+                       <string>1000000000</string>
                       </property>
                      </widget>
                     </item>
