@@ -85,7 +85,7 @@ Using the `requirements.txt` file this command will install all Python libraries
 ```
 $ pip install -r requirements.txt
 ```
-#### ***Note: If you want to use the Inertial Stability feature, clone this two repositories [1] Mesh Reader:(https://github.com/p-hofmann/MeshReader.git),[2] Voxlib: (https://github.com/p-hofmann/PyVoxelizer.git) into your environment.***
+#### ***Note: If you want to use the Inertial Stability feature, clone this two repositories; Mesh Reader:(https://github.com/p-hofmann/MeshReader.git), Voxlib: (https://github.com/p-hofmann/PyVoxelizer.git) into your environment.***
 
 ### 4- launch the tool:
 Finally:
