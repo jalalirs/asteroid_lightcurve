@@ -40,7 +40,7 @@
       <item>
        <widget class="QLineEdit" name="ln_objId">
         <property name="text">
-         <string>624</string>
+         <string>1620</string>
         </property>
        </widget>
       </item>
@@ -93,6 +93,13 @@
          </size>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_2">
+         <item>
+          <widget class="QLabel" name="label_2">
+           <property name="text">
+            <string>Session</string>
+           </property>
+          </widget>
+         </item>
          <item>
           <widget class="QListWidget" name="lst_runs">
            <property name="minimumSize">

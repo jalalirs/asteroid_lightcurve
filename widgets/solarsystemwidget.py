@@ -9,7 +9,8 @@ from .imgplot import ImagePlot
 from .orbitplotter import OrbitPlot
 from .mesh import Mesh
 from .lightcurve import LightCurve
-from voxlib.voxelize import voxelize, get_intersecting_voxels_depth_first, scale_and_shift_triangle
+from . import qt_util as qtutil
+
 
 
 
@@ -19,12 +20,16 @@ from astropy.time import Time
 import time
 import trimesh
 import pyrender
-from astropy import units as u
 import pyrender
 from pyrender.constants import RenderFlags as RenderFlags
 from poliastro.bodies import Earth,Mars
-from astropy.time import Time
+from astropy.time import Time,TimeDelta
 from poliastro.ephem import  Ephem
+from astropy import units as u
+from poliastro.util import norm, time_range
+from poliastro.frames import Planes
+
+
 
 import math
 
@@ -74,7 +79,7 @@ class SolarSystemWidget(QSolarSystemWidget,Ui_SolarSystemWidget):
 		QWidget.__init__(self,parent)
 		self.setupUi(self)
 		
-		self._presets = {"Mars": Mars}
+		#self._presets = {"Mars": Mars,"Geographos":}
 		
 		self.object = None
 
@@ -98,8 +103,8 @@ class SolarSystemWidget(QSolarSystemWidget,Ui_SolarSystemWidget):
 
 		Mesh.mesh.signal.connect(self.onMeshChanged)
 	def calculateStability(self):
+		from voxlib.voxelize import voxelize, get_intersecting_voxels_depth_first, scale_and_shift_triangle
 		resolution = 11
-		print("calculateStability")
 		objfile = Mesh.mesh.path
 		coords = np.array(list(set(voxelize(objfile, resolution))))
 
@@ -196,12 +201,16 @@ class SolarSystemWidget(QSolarSystemWidget,Ui_SolarSystemWidget):
 
 		year = int(self.ln_year.text())
 		month= int(self.ln_month.text())
-		day = int(self.ln_day.text())
-
-		ob = self.cmb_presetOrbit.currentText()
-		presetOrbet = self._presets[ob]
-
+		day = int(self.ln_day.text())		
 		date = Time(f"{year}-{month}-{day}",scale="tdb")
+
+		presetOrbet = self.ln_orbit.text()
+		epochs = time_range(date - TimeDelta(1 * u.day), end=date + TimeDelta(1 * u.day))
+		try:
+			body = Ephem.from_horizons(presetOrbet, epochs, plane=Planes.EARTH_ECLIPTIC)
+		except:
+			qtutil.notify(f"Unknown target ({presetOrbet}). Maybe try different object name")
+			return
 
 		if self.sunLightNode:
 			self.scene.remove_node(self.sunLightNode)
@@ -218,8 +227,11 @@ class SolarSystemWidget(QSolarSystemWidget,Ui_SolarSystemWidget):
 		self.sunLight = light
 		self.sunLightNode = pyrender.Node(light=self.sunLight,matrix=np.eye(4))
 		self.scene.add_node(self.sunLightNode)
-
-		e_t,e_p,b_t,b_p = self.orbitplot.plot(Earth,presetOrbet,date,labels=["Earth",ob],clear=True)
+		
+		
+		
+		e_t,e_p,b_t,b_p = self.orbitplot.plot(Earth,body,date,labels=["Earth",f"{year}-{str(month).zfill(2)}-{str(day).zfill(2)} ({presetOrbet})"],clear=True)
+		
 		xe,ye = e_p.get_data()
 		xb,yb = b_p.get_data()
 		xe,ye,xb,yb = xe[0]/1.496e+6,ye[0]/1.496e+6,xb[0]/1.496e+6,yb[0]/1.496e+6
@@ -326,8 +338,8 @@ class SolarSystemWidget(QSolarSystemWidget,Ui_SolarSystemWidget):
 	def plot(self):
 		simulatedX = self.lineX
 		simulatedY = self.lineY
-		observedX = []
-		observedY = []
+		observedX = np.array([])
+		observedY = np.array([])
 		if LightCurve.inUse is not None:
 			lightcurve = LightCurve.inUse
 			jds = lightcurve.jd
@@ -339,7 +351,8 @@ class SolarSystemWidget(QSolarSystemWidget,Ui_SolarSystemWidget):
 			observedY = np.array(lightcurve.mag)
 			observedY = observedY.max() - (observedY - observedY.min())
 		if self.pb_normalize.isChecked():
-			observedY = (observedY-observedY.min())/(observedY.max()-observedY.min())
+			if observedX.size > 0:
+				observedY = (observedY-observedY.min())/(observedY.max()-observedY.min())
 			simulatedY = (self.lineY-self.minY)/(self.maxY-self.minY)
 		simulatedX = simulatedX[0:simulatedX.size-self.currentStart]
 		simulatedY = simulatedY[self.currentStart:]
@@ -349,7 +362,7 @@ class SolarSystemWidget(QSolarSystemWidget,Ui_SolarSystemWidget):
 
 	def on_pb_showObserved_released(self):
 		if LightCurve.inUse is None:
-			notify("No observed data loaded")
+			qtutil.notify("No observed data is in-use")
 			self.pb_showObserved.setChecked(False)
 			return
 		self.plot()

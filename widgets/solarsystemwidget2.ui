@@ -290,17 +290,15 @@
                        </size>
                       </property>
                       <property name="text">
-                       <string>Preset</string>
+                       <string>Object</string>
                       </property>
                      </widget>
                     </item>
                     <item>
-                     <widget class="QComboBox" name="cmb_presetOrbit">
-                      <item>
-                       <property name="text">
-                        <string>Mars</string>
-                       </property>
-                      </item>
+                     <widget class="QLineEdit" name="ln_orbit">
+                      <property name="text">
+                       <string>Geographos</string>
+                      </property>
                      </widget>
                     </item>
                    </layout>

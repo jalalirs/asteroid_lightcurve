@@ -109,6 +109,7 @@ class LightCurveWidget(QLightCurveWidget, Ui_LightCurveWidget):
     def on_lst_runs_currentRowChanged(self,row):
         selectedItem = self.items[row]
         self.currentRow = row
+
         self.lightcurveplot.plot(np.array(selectedItem.jd),np.array(selectedItem.mag),np.array(selectedItem.err),flipy=True)
 
     def on_pb_retrieve_released(self):
@@ -126,9 +127,9 @@ class LightCurveWidget(QLightCurveWidget, Ui_LightCurveWidget):
         if len(items) > 0 :
             self.pb_use.setEnabled(True)
             if "OBJECTNAME" in items[0].metadata:
-                self.lbl_objectName.setText(items[0].metadata["OBJECTNAME"])
+                self.lbl_objectName.setText(f'{items[0].metadata["OBJECTNAME"]}')
         for item in items:
-            self.lst_runs.addItem(item.metadata["LCBLOCKID"])
+            self.lst_runs.addItem(f'{item.metadata["LCBLOCKID"]} ({item.metadata["SESSIONDATE"]})')
          
         self.pb_retrieve.setEnabled(True)
         self.progressBar.setVisible(False)
