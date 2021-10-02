@@ -3,7 +3,7 @@
 ![ezgif com-gif-maker (3)](https://user-images.githubusercontent.com/83130573/135700079-26e068c9-79c0-4adf-a8b9-4bad44d7e836.gif)
 
 ## I.About:
-#### Asteroid Curve is a tool that enables scientists to study and create an asteroid light curve by rendering the 3D model, manipulating object's position, light source, simulation and observing settings. 
+#### Asteroid Curve is a tool that enables scientists and users to study and create an asteroid light curve by rendering the 3D model, manipulating object's position, light source, simulation and observing settings. 
 #### This project is a submission for the [2021 NASA Space Apps Challenge](https://www.spaceappschallenge.org/about/). 
 #### More information on [our team's project](https://2021.spaceappschallenge.org/challenges/statements/when-light-curves-throw-us-curve-balls/teams/glowing-darkness/project), [how to use the interface](https://www.youtube.com/watch?v=LkDYK82yCeo).
 
