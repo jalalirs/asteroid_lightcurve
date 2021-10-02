@@ -5,7 +5,7 @@
 ## I.About:
 #### Asteroid Curve is a tool that enables scientists to study and create an asteroid light curve by rendering the 3D model, manipulating object's position, light source, simulation and observing settings. 
 #### This project is a submission for the [2021 NASA Space Apps Challenge](https://www.spaceappschallenge.org/about/). 
-#### More information on [our team's project](https://2021.spaceappschallenge.org/challenges/statements/when-light-curves-throw-us-curve-balls/teams/glowing-darkness/project).
+#### More information on [our team's project](https://2021.spaceappschallenge.org/challenges/statements/when-light-curves-throw-us-curve-balls/teams/glowing-darkness/project), [how to use the interface](https://www.youtube.com/watch?v=LkDYK82yCeo).
 
 
 ## II.Usage:
@@ -85,6 +85,7 @@ Using the `requirements.txt` file this command will install all Python libraries
 ```
 $ pip install -r requirements.txt
 ```
+#### ***Note: If you want to use the Inertial Stability feature, clone this two repositories [1](https://github.com/p-hofmann/MeshReader.git),[2](https://github.com/p-hofmann/PyVoxelizer.git) into your environment.***
 
 ### 4- launch the tool:
 Finally:
