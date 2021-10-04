@@ -51,9 +51,13 @@ import pandas as pd
 
 
 
+sin,cos,rad = np.sin,np.cos,np.deg2rad
 
-
-
+tran = lambda tx,ty,tz: np.array([[1,0,0,tx],[0,1,0,ty],[0,0,1,tz],[0,0,0,1]])
+rot = lambda a,b,g: np.array([[cos(b)*cos(g),cos(b)*sin(g),-sin(b),0],
+			[sin(a)*sin(b)*cos(g) - cos(a)*sin(g),sin(a)*sin(b)*sin(g)+cos(a)*cos(g), sin(a)*cos(b),0],
+			[cos(a)*sin(b)*cos(g)+sin(a)*sin(g), cos(a)*sin(b)*sin(g)-sin(a)*cos(g),cos(a)*cos(b),0],
+			[0,0,0,1]])
 
 
 def length(v):
@@ -100,6 +104,22 @@ class SolarSystemWidget(QSolarSystemWidget,Ui_SolarSystemWidget):
 		self.currentStart = None
 		self.minY = None
 		self.maxY = None
+		
+		self.wX = 0
+		self.wY = 0
+		self.wZ = 0
+		
+		self.meshRotX = 0
+		self.meshRotY = 0
+		self.meshRotZ = 0
+
+		self.meshPosX = 0
+		self.meshPosY = 0
+		self.meshPosZ = 0
+
+		self.shutterSpeed = 0
+
+		
 
 		Mesh.mesh.signal.connect(self.onMeshChanged)
 	def calculateStability(self):
@@ -144,6 +164,7 @@ class SolarSystemWidget(QSolarSystemWidget,Ui_SolarSystemWidget):
 			maxInertia =3
 		print("calculateStability")
 		return maxVel == maxInertia
+	
 	def clear_scene(self):
 		for n in self.sceneNodes:
 			try:
@@ -190,12 +211,8 @@ class SolarSystemWidget(QSolarSystemWidget,Ui_SolarSystemWidget):
 
 
 		self.play = True
-		sin,cos,rad = np.sin,np.cos,np.deg2rad
-		tran = lambda tx,ty,tz: np.array([[1,0,0,tx],[0,1,0,ty],[0,0,1,tz],[0,0,0,1]])
-		rot = lambda a,b,g: np.array([[cos(b)*cos(g),cos(b)*sin(g),-sin(b),0],
-			[sin(a)*sin(b)*cos(g) - cos(a)*sin(g),sin(a)*sin(b)*sin(g)+cos(a)*cos(g), sin(a)*cos(b),0],
-			[cos(a)*sin(b)*cos(g)+sin(a)*sin(g), cos(a)*sin(b)*sin(g)-sin(a)*cos(g),cos(a)*cos(b),0],
-			[0,0,0,1]])
+		
+		
 
 		self.sceneNodes = []
 
@@ -238,9 +255,9 @@ class SolarSystemWidget(QSolarSystemWidget,Ui_SolarSystemWidget):
 		# mesh
 		if self.meshNode:
 			self.scene.remove_node(self.meshNode)
-		meshPosX,meshPosY,meshPosZ = xb,yb,0
+		self.meshPosX,self.meshPosY,self.meshPosZ = xb,yb,0
 		meshRotX,meshRotY,meshRotZ = rad(0),rad(0),rad(0)
-		meshPose = np.matmul(tran(meshPosX,meshPosY,meshPosZ),
+		meshPose = np.matmul(tran(self.meshPosX,self.meshPosY,self.meshPosZ),
 			rot(meshRotX,meshRotY,meshRotZ))
 		meshNode = pyrender.Mesh.from_trimesh(self.mesh)
 		self.meshNode = pyrender.Node(mesh=meshNode,matrix=meshPose)
@@ -251,8 +268,8 @@ class SolarSystemWidget(QSolarSystemWidget,Ui_SolarSystemWidget):
 			self.scene.remove_node(self.cameraNode)
 		cameraPosX,cameraPosY,cameraPosZ = xe,ye,0
 		view_matrix = m3dLookAt([cameraPosX,cameraPosY,cameraPosZ], 
-			[meshPosX,meshPosY,meshPosZ], [0, 1, 0])
-		dx,dy,dz = cameraPosX-meshPosX,cameraPosY-meshPosY,cameraPosZ-meshPosZ
+			[self.meshPosX,self.meshPosY,self.meshPosZ], [0, 1, 0])
+		dx,dy,dz = cameraPosX-self.meshPosX,cameraPosY-self.meshPosY,cameraPosZ-self.meshPosZ
 
 
 		cameraPose = np.matmul(tran(cameraPosX,cameraPosY,cameraPosZ),view_matrix)
@@ -268,23 +285,23 @@ class SolarSystemWidget(QSolarSystemWidget,Ui_SolarSystemWidget):
 		if dt > period:
 			notify("Dt should smaller than period","error")
 			return
-		shutterSpeed = float(self.ln_shutterSpeed.text())
-		wX,wY,wZ = float(self.ln_wX.text()),float(self.ln_wY.text()),float(self.ln_wZ.text())
+		self.shutterSpeed = float(self.ln_shutterSpeed.text())
+		self.wX,self.wY,self.wZ = float(self.ln_wX.text()),float(self.ln_wY.text()),float(self.ln_wZ.text())
 		
 		time = 0
 		shotTime = 0
 		y = []
 		currentIntensity = 0
-		self.lineY = np.array([0]*int(period/shutterSpeed))
-		self.lineX = np.array([0]*int(period/shutterSpeed))
+		self.lineY = np.array([0]*int(period/self.shutterSpeed))
+		self.lineX = np.array([0]*int(period/self.shutterSpeed))
 		lineCount = 0
 		self.currentStart = 0
 		self.currentEnd = self.lineY.size
 		while time < period and self.play:
 			time += dt
 			shotTime += dt
-			meshRotX,meshRotY,meshRotZ = meshRotX+dt*wX,meshRotY+dt*wY,meshRotZ+dt*wZ
-			meshPose = np.matmul(tran(meshPosX,meshPosY,meshPosZ),
+			meshRotX,meshRotY,meshRotZ = meshRotX+dt*self.wX,meshRotY+dt*self.wY,meshRotZ+dt*self.wZ
+			meshPose = np.matmul(tran(self.meshPosX,self.meshPosY,self.meshPosZ),
 			rot(rad(meshRotX),rad(meshRotY),rad(meshRotZ)))
 			self.scene.set_pose(self.meshNode, pose=meshPose)
 			
@@ -293,7 +310,7 @@ class SolarSystemWidget(QSolarSystemWidget,Ui_SolarSystemWidget):
 			color[depth == 0] = 0
 			currentIntensity += color.sum()
 			self.renderedImagePlot.plot(color,clear=True)
-			if shotTime >= shutterSpeed and lineCount < self.lineY.size:
+			if shotTime >= self.shutterSpeed and lineCount < self.lineY.size:
 				shotTime = 0
 				self.lineY[lineCount] = currentIntensity
 				self.lineX[lineCount] = time
@@ -323,6 +340,8 @@ class SolarSystemWidget(QSolarSystemWidget,Ui_SolarSystemWidget):
 		if self.currentStart != 0:
 			self.pb_shiftRight.setEnabled(True)
 		self.plot()
+		time = self.currentStart*self.shutterSpeed
+		self.renderAt(time)
 	
 	def on_pb_shiftRight_released(self):
 		self.currentStart = self.currentStart - 1
@@ -331,7 +350,19 @@ class SolarSystemWidget(QSolarSystemWidget,Ui_SolarSystemWidget):
 		if self.currentStart != self.lineY.size-1:
 			self.pb_shiftLeft.setEnabled(True)
 		self.plot()
-	
+		time = self.currentStart*self.shutterSpeed
+		self.renderAt(time)
+		
+	def renderAt(self,time):
+		meshRotX,meshRotY,meshRotZ = time*self.wX,time*self.wY,time*self.wZ
+		meshPose = np.matmul(tran(self.meshPosX,self.meshPosY,self.meshPosZ),
+		rot(rad(meshRotX),rad(meshRotY),rad(meshRotZ)))
+		self.scene.set_pose(self.meshNode, pose=meshPose)
+		color, depth = self.r.render(self.scene)
+		color = color.copy()
+		color[depth == 0] = 0
+		self.renderedImagePlot.plot(color,clear=True)
+
 	def on_pb_normalize_released(self):
 		self.plot()
 

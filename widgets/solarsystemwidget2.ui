@@ -224,7 +224,7 @@
                     <item>
                      <widget class="QLineEdit" name="ln_year">
                       <property name="text">
-                       <string>2018</string>
+                       <string>2008</string>
                       </property>
                      </widget>
                     </item>
@@ -238,7 +238,7 @@
                     <item>
                      <widget class="QLineEdit" name="ln_month">
                       <property name="text">
-                       <string>1</string>
+                       <string>3</string>
                       </property>
                      </widget>
                     </item>
@@ -410,14 +410,14 @@
                     <item>
                      <widget class="QLabel" name="label_11">
                       <property name="text">
-                       <string>Field of view</string>
+                       <string>yfov</string>
                       </property>
                      </widget>
                     </item>
                     <item>
                      <widget class="QLineEdit" name="ln_cameraYfov">
                       <property name="text">
-                       <string>0.1</string>
+                       <string>0.5</string>
                       </property>
                      </widget>
                     </item>
@@ -534,7 +534,7 @@
                     <item>
                      <widget class="QLineEdit" name="ln_lightIntensity">
                       <property name="text">
-                       <string>500000</string>
+                       <string>500000000000</string>
                       </property>
                      </widget>
                     </item>
@@ -589,7 +589,7 @@
                     <item>
                      <widget class="QLabel" name="label_10">
                       <property name="text">
-                       <string>Simulation time (s)</string>
+                       <string>Period (s)</string>
                       </property>
                      </widget>
                     </item>
@@ -615,7 +615,7 @@
                     <item>
                      <widget class="QLabel" name="label_24">
                       <property name="text">
-                       <string>Time step (s)</string>
+                       <string>Dt (s)</string>
                       </property>
                      </widget>
                     </item>
