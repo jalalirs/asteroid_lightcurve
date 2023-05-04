@@ -19,7 +19,7 @@ API_ENDPOINT = "https://alcdef.org/php/alcdef_GenerateALCDEFPage.php"
 
 
 DIR = os.path.abspath(os.path.dirname(__file__))
-QLightCurveWidget, Ui_LightCurveWidget = uic.loadUiType(os.path.join(DIR, "lightcurveWidget.ui"), resource_suffix='') 
+QLightCurveWidget, Ui_LightCurveWidget = uic.loadUiType(os.path.join(DIR, "lightcurvewidget.ui"), resource_suffix='') 
 
 
 
